@@ -2,8 +2,6 @@ const sha256 = require('sha256');
 const uuid = require('uuid/v1')
 const currentNodeUrl = process.argv[3];
 
-
-
 function Blockchain() {
 	this.chain = []; //All the block that we create or mine will be stored here 
 	this.pendingTransactions = [];
@@ -26,7 +24,7 @@ Blockchain.prototype.createNewBlock =  function(nonce, previousBlockHash, hash){
 	const newBlock = {
 		index: this.chain.length +1,
 		timestamp: Date.now(),
-		transctions: this.pendingTransactions,
+		transactions: this.pendingTransactions,
 		nonce: nonce, //it a prove of work (here it is a just a no)
 		hash: hash, // this will the data from the new block 
 		previousBlockHash: previousBlockHash
@@ -81,7 +79,31 @@ Blockchain.prototype.proofOfWork =  function(previousBlockHash, currentBlockData
 	return nonce;
 }
 
+Blockchain.prototype.chainIsValid = function(blockchain) {
+	let validChain = true;
 
+	for(var i=1; i<blockchain.length; i++) {
+		const currentBlock = blockchain[i];
+		const prevBlock = blockchain[i-1];
+		const blockHash = this.hashBlock(prevBlock['hash'],{transaction: currentBlock['transactions'], index: currentBlock['index']}, currentBlock['nonce']);
+		
+		if(blockHash.substring(0,4) !== '0000'){ validChain = false; }
+
+		if(currentBlock.previousBlockHash !== prevBlock.hash) { //chain in not valid
+			validChain = false;
+		}
+	};
+
+	const genesisBlock = blockchain[0];
+	const correntNonce = genesisBlock.nonce === 100;
+	const correntPrevBlockHash = genesisBlock.previousBlockHash === '0';
+	const correntHash = genesisBlock.hash === '0';
+	const correntTransactions = genesisBlock.transactions.length === 0;
+
+	if(!correntNonce || !correntPrevBlockHash || !correntHash || !correntTransactions){ validChain=false; }
+
+	return validChain;
+}
 
 module.exports = Blockchain;
 

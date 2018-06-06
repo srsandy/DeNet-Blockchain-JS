@@ -48,12 +48,12 @@ app.post('/transaction/brodcast', (req, res) => {
     });
 });
 
-app.get('/mine', (req, res) => {
+app.get('/mine', function(req, res) {
     const lastBlock = bitcoin.getLastBlock();
     const previousBlockHash = lastBlock['hash'];
 
     const currentBlockData = {
-        transaction: this.pendingTransactions,
+        transaction: bitcoin.pendingTransactions,
         index: lastBlock['index'] + 1
     };
 
