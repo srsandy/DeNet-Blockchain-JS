@@ -13,3 +13,4 @@ So here the ledger is not in the hands of a single company. But is persisted by 
 Each person who contributes to the blockchain network is called a NODE. Each node has the exact same copy of the ledger. So the ledger data is hosted and synchronised on the whole network. 
 
 
+#block chain being one of the emerging technology is providing vast range of applications around the globe
