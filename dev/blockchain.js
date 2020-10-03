@@ -1,3 +1,4 @@
+//Declaring Variables
 const sha256 = require('sha256');
 const uuid = require('uuid/v1')
 const currentNodeUrl = process.argv[3];
